@@ -13,6 +13,7 @@
             --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             --hover-color: #2980b9;
             --hover-background: #f0f7ff;
+            --disabled-color: #e0e0e0;
         }
 
         * {
@@ -26,6 +27,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
             min-height: 100vh;
             background-color: #f5f7fa;
             padding: 20px;
@@ -50,6 +53,10 @@
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             height: 80px;
             position: relative;
+        }
+
+        .own-profile .profile-header {
+            background: linear-gradient(135deg, #11cb6a 0%, #25c4fc 100%);
         }
 
         .avatar {
@@ -130,13 +137,34 @@
             outline: none;
         }
 
-        .follow-btn:hover {
+        .follow-btn:hover:not(:disabled) {
             background-color: var(--hover-color);
         }
 
         .follow-btn.following {
             background-color: #e1e1e1;
             color: var(--text-color);
+        }
+
+        .follow-btn:disabled {
+            background-color: var(--disabled-color);
+            color: var(--light-text);
+            cursor: not-allowed;
+        }
+
+        .card-title {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .card-container {
+            position: relative;
+            margin-top: 30px;
         }
 
         @media (max-width: 480px) {
@@ -156,39 +184,139 @@
     </style>
 </head>
 <body>
-    <article class="profile-card">
-        <header class="profile-header">
-            <div class="avatar">
-                <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&s=200" alt="User Avatar">
-            </div>
-        </header>
-        <section class="profile-content">
-            <h1 class="full-name">Jane Doe</h1>
-            <p class="username">@janedoe</p>
-            <div class="location">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                    <path d="M192 0C85.97 0 0 85.97 0 192c0 77.41 26.97 99.03 172.3 309.7c9.531 13.77 29.91 13.77 39.44 0C357 291 384 269.4 384 192C384 85.97 298 0 192 0zM192 271.1c-44.13 0-80-35.88-80-80S147.9 111.1 192 111.1s80 35.88 80 80S236.1 271.1 192 271.1z"/>
-                </svg>
-                San Francisco, CA
-            </div>
-            <p class="bio">Product designer and developer based in San Francisco. Passionate about creating intuitive user experiences and beautiful interfaces. Love hiking and photography in my free time.</p>
-            <button id="followBtn" class="follow-btn">Follow</button>
-        </section>
-    </article>
+    <div class="card-container">
+        <div class="card-title">Your Profile</div>
+        <article class="profile-card own-profile">
+            <header class="profile-header">
+                <div class="avatar">
+                    <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&s=150" alt="Your Avatar">
+                </div>
+            </header>
+            <section class="profile-content">
+                <h1 class="full-name">Your Name</h1>
+                <p class="username">@yourname</p>
+                <div class="location">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                        <path d="M192 0C85.97 0 0 85.97 0 192c0 77.41 26.97 99.03 172.3 309.7c9.531 13.77 29.91 13.77 39.44 0C357 291 384 269.4 384 192C384 85.97 298 0 192 0zM192 271.1c-44.13 0-80-35.88-80-80S147.9 111.1 192 111.1s80 35.88 80 80S236.1 271.1 192 271.1z"/>
+                    </svg>
+                    New York, NY
+                </div>
+                <p class="bio">UI/UX designer with a passion for creating meaningful digital experiences. Focused on accessibility and user-centered design. Coffee enthusiast and amateur photographer.</p>
+                <button class="follow-btn" disabled>Own Profile</button>
+            </section>
+        </article>
+    </div>
+
+    <div class="card-container">
+        <div class="card-title">Other Profile</div>
+        <article class="profile-card">
+            <header class="profile-header">
+                <div class="avatar">
+                    <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&s=200" alt="User Avatar">
+                </div>
+            </header>
+            <section class="profile-content">
+                <h1 class="full-name">Jane Doe</h1>
+                <p class="username">@janedoe</p>
+                <div class="location">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                        <path d="M192 0C85.97 0 0 85.97 0 192c0 77.41 26.97 99.03 172.3 309.7c9.531 13.77 29.91 13.77 39.44 0C357 291 384 269.4 384 192C384 85.97 298 0 192 0zM192 271.1c-44.13 0-80-35.88-80-80S147.9 111.1 192 111.1s80 35.88 80 80S236.1 271.1 192 271.1z"/>
+                    </svg>
+                    San Francisco, CA
+                </div>
+                <p class="bio">Product designer and developer based in San Francisco. Passionate about creating intuitive user experiences and beautiful interfaces. Love hiking and photography in my free time.</p>
+                <button id="followBtn" class="follow-btn">Follow</button>
+            </section>
+        </article>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const followBtn = document.getElementById('followBtn');
-            
-            followBtn.addEventListener('click', function() {
-                if (followBtn.textContent === 'Follow') {
-                    followBtn.textContent = 'Following';
-                    followBtn.classList.add('following');
+            // Function to create a profile card
+            function createProfileCard(container, userData) {
+                const card = container.querySelector('.profile-card');
+                const followBtn = card.querySelector('.follow-btn');
+                
+                // Set profile data
+                card.querySelector('.full-name').textContent = userData.name;
+                card.querySelector('.username').textContent = '@' + userData.username;
+                card.querySelector('.location').innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                        <path d="M192 0C85.97 0 0 85.97 0 192c0 77.41 26.97 99.03 172.3 309.7c9.531 13.77 29.91 13.77 39.44 0C357 291 384 269.4 384 192C384 85.97 298 0 192 0zM192 271.1c-44.13 0-80-35.88-80-80S147.9 111.1 192 111.1s80 35.88 80 80S236.1 271.1 192 271.1z"/>
+                    </svg>
+                    ${userData.location}
+                `;
+                card.querySelector('.bio').textContent = userData.bio;
+                card.querySelector('.avatar img').src = userData.avatar;
+                
+                // Handle the follow button based on isOwnProfile
+                if (userData.isOwnProfile) {
+                    followBtn.textContent = 'Own Profile';
+                    followBtn.disabled = true;
+                    card.classList.add('own-profile');
                 } else {
                     followBtn.textContent = 'Follow';
-                    followBtn.classList.remove('following');
+                    followBtn.disabled = false;
+                    
+                    // Add click event for follow button
+                    followBtn.addEventListener('click', function() {
+                        if (followBtn.textContent === 'Follow') {
+                            followBtn.textContent = 'Following';
+                            followBtn.classList.add('following');
+                        } else {
+                            followBtn.textContent = 'Follow';
+                            followBtn.classList.remove('following');
+                        }
+                    });
                 }
-            });
+            }
+            
+            // Example of how the function would be used with data
+            // (This is just for demonstration - we're not actually calling it here
+            // since we've already set up the HTML statically)
+            
+            /*
+            // Example data that would be passed as props in a component framework
+            const ownProfileData = {
+                name: 'Your Name',
+                username: 'yourname',
+                location: 'New York, NY',
+                bio: 'UI/UX designer with a passion for creating meaningful digital experiences. Focused on accessibility and user-centered design. Coffee enthusiast and amateur photographer.',
+                avatar: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&s=150',
+                isOwnProfile: true
+            };
+            
+            const otherProfileData = {
+                name: 'Jane Doe',
+                username: 'janedoe',
+                location: 'San Francisco, CA',
+                bio: 'Product designer and developer based in San Francisco. Passionate about creating intuitive user experiences and beautiful interfaces. Love hiking and photography in my free time.',
+                avatar: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&s=200',
+                isOwnProfile: false
+            };
+            
+            // Get the containers
+            const ownProfileContainer = document.querySelector('.card-container:nth-child(1)');
+            const otherProfileContainer = document.querySelector('.card-container:nth-child(2)');
+            
+            // Create the profile cards
+            createProfileCard(ownProfileContainer, ownProfileData);
+            createProfileCard(otherProfileContainer, otherProfileData);
+            */
+            
+            // For the existing follow button
+            const followBtn = document.getElementById('followBtn');
+            if (followBtn) {
+                followBtn.addEventListener('click', function() {
+                    if (followBtn.textContent === 'Follow') {
+                        followBtn.textContent = 'Following';
+                        followBtn.classList.add('following');
+                    } else {
+                        followBtn.textContent = 'Follow';
+                        followBtn.classList.remove('following');
+                    }
+                });
+            }
         });
     </script>
 </body>
